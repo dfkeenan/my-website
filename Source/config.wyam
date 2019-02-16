@@ -1,0 +1,20 @@
+#recipe Blog
+#theme BlogTemplate
+
+// Customize your settings and add new ones here
+Settings[Keys.Host] = "dfkeenan.github.io";
+Settings[Keys.LinksUseHttps] = true;
+Settings[BlogKeys.Title] = "My Blog";
+//Settings[BlogKeys.Description] = "Daniel Keenan's website";
+
+// Add any pipeline customizations here
+//Work around to get npm bootstrap to work.
+FileSystem.InputPaths.Add("node_modules/bootstrap/scss");
+
+Pipelines.Add("Bootstrap",
+    ReadFiles("{!_,}*.scss"),
+    Sass()
+        .WithCompactOutputStyle(),
+    WriteFiles((doc, ctx) => $"assets/css/{doc.String(Keys.RelativeFilePath)}")
+        .UseWriteMetadata(false)
+);

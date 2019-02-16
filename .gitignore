@@ -1,0 +1,5 @@
+**/node_modules
+
+# Wyam
+config.wyam.*
+/Source/output
