@@ -1,24 +1,65 @@
-<ul>
-    @foreach(IDocument post in Model.DocumentList(Keys.PageDocuments))
-    {
-        <li>
-            <a href="@Context.GetLink(post)">
-                <h2>@post.WithoutSettings.String(BlogKeys.Title)</h2>
-            </a>
-            @Html.Raw(post.String(BlogKeys.Excerpt))
-        </li>    
-    }
-</ul>
-
-@if(Model.Bool(Keys.HasPreviousPage)) {
-    <a href="@(Context.GetLink(Model.Document(Keys.PreviousPage)))"><span aria-hidden="true">&larr;</span> Newer</a> 
-} 
-
-@if(Model.Bool(Keys.HasNextPage)) {
-    <a href="@(Context.GetLink(Model.Document(Keys.NextPage)))">Older <span aria-hidden="true">&rarr;</span></a> 
+@{
+    Layout = "_MasterLayout";    
+    ViewBag.EnableScrollSpy = true;
 }
 
-@if(Context.Bool(BlogKeys.GenerateArchive))
-{
-    <a href="@Context.GetLink(Context.String(BlogKeys.PostsPath))">Archive &rarr;</a>
+@section topNav {
+    <nav id="top-nav" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">dfkeenan</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#home-section">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#blog-section">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#projects-section">Projects</a>
+                </li>        
+            </ul>
+        </div>
+    </nav> 
+
+
 }
+
+
+<div>
+    <section id="home-section" class="promo-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md">
+                        sdfsdf
+                </div>
+                <div class="col-md">
+                        dssdfsdfsdf
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="blog-section" class="promo-section bg-dark">
+        <div class="container-fluid">
+            <h1>Blogs</h1>
+            <div class="card-deck">
+                @foreach(var post in Model.DocumentList(Keys.PageDocuments).Take(3)){
+                    <div class="card">
+                        <div class="card-body">
+                            <a href="@Context.GetLink(post)"><h5 class="card-title"> @post.WithoutSettings.String(BlogKeys.Title)</h5></a>
+                            <p class="card-text">@Html.Raw(post.String(BlogKeys.Excerpt))</p>
+                        </div>
+                    </div>
+                }
+            </div>
+            <a href="@Context.GetLink(Context.String(BlogKeys.PostsPath))">More blog posts</a>
+        </div>
+        
+    </section>
+    <section id="projects-section" class="promo-section bg-dark">
+
+    </section>
+</div>

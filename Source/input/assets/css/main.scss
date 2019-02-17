@@ -5,5 +5,25 @@ $body-color: #DCDCDC;
 $dark: #2D2D30;
 $primary: #007ACC;
 
-/* Don't touch below here */
+
+
+
 @import "../../../node_modules/bootstrap/scss/bootstrap";
+
+
+
+@include media-breakpoint-up(lg) {
+    // Styles
+    .nav-link.active {
+        border-bottom: 10px solid $primary;
+        margin-bottom: -8px;
+    }
+}
+
+.promo-section {
+    min-height: 100VH;
+}
+
+body {
+    padding-top: 58px;
+}

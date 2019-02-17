@@ -1,57 +1,34 @@
 @{
-    Layout = "_MasterLayout";
+    Layout = "_MasterLayout";    
+    ViewBag.FixedFooter = true;
 }
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">dfkeenan</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-            <a class="nav-link" href="@Context.GetLink("/")">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <!-- <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-        </li> -->
-        @{
-            List<Tuple<string, string>> pages = Context
-                .Documents[Blog.Pages]
-                .Where(x => x.Bool(BlogKeys.ShowInNavbar, true))
-                .Where(x => x.FilePath(Keys.RelativeFilePath)?.FullPath?.StartsWith("index") == (bool?)false)
-                .Select(x => Tuple.Create(x.WithoutSettings.String(Keys.Title), Context.GetLink(x)))
-                .Where(x => !string.IsNullOrEmpty(x.Item1))
-                .OrderBy(x => x.Item1)
-                .ToList();
-            if(Documents[Blog.Tags].Any())
-            {
-                pages.Insert(0, Tuple.Create("Tags", Context.GetLink("tags/index.html")));
-            }
-            if(Documents[Blog.BlogPosts].Any() && Context.Bool(BlogKeys.GenerateArchive))
-            {
-                pages.Insert(0, Tuple.Create("Archive", Context.GetLink(Context.String(BlogKeys.PostsPath) + "/index.html")));
-            }
-            foreach(Tuple<string, string> page in pages)
-            {
-
-                <li class="nav-item"><a class="nav-link" href="@(page.Item2)">@(page.Item1)</a></li>
-            }
-        }
-    </div>
-</nav>
 <div class="container-fluid">
-    @if(Context.String(BlogKeys.Description) != null)
-    {
-        <a href="@Context.GetLink("/")"><h1>@Context.String(BlogKeys.Description)</h1> </a>
-    }
-    @if(Context.String(BlogKeys.Intro) != null)
-    {            
-        @if(Context.String(BlogKeys.Description) != null)
-        {
-            <hr>
-        }
-        <span>@Context.String(BlogKeys.Intro)</span>
-    }
-    @RenderBody()
+    <div class="row">
+        <div class="col">
+            <h1>@Context.String(Keys.Title)</h1>   
+            @RenderBody()
+        </div>
+        <div class="d-none d-lg-flex flex-column mt-3 pl-3 pr-3" style="width:250px;" >
+            <div class="card border-dark bg-transparent">
+                <div class="card-header bg-dark">Popular tags</div>
+                <div class="card-body text-light">
+                   @foreach (IDocument tagDocument in Documents[Blog.Tags]
+                        .GroupBy(x => x.String(BlogKeys.Tag)).Select(x => x.Where(p => p.Get<int>(Keys.CurrentPage) == 1).First())
+                        .OrderByDescending(x => x.Get<int>(Keys.TotalItems)).Take(10))
+                    {
+                        string tag = tagDocument.String(BlogKeys.Tag);
+                        string postCount = tagDocument.String(Keys.TotalItems);
+                        <a class="btn btn-primary btn-sm m-1" role="button" href="@Context.GetLink(tagDocument)" > @tag <span class="badge badge-light">@postCount</span></a>
+                    }
+                    
+                </div>
+                  <div class="card-footer text-muted">
+                    <a href="@Context.GetLink("tags/index.html")">More tags</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </div>
+

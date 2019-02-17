@@ -4,6 +4,7 @@
     tag = tag.StartsWith(".") ? tag.Substring(1) : tag; 
 }
 
+<h2>Posts tagged @Model.WithoutSettings.String(BlogKeys.Title)</h2>         
 <ul>
     @foreach(var post in postPages){
     <li>
@@ -15,4 +16,5 @@
     }
 </ul>
 
-<a href="@Context.GetLink(Context.String(BlogKeys.PostsPath))">Back To posts</a>
+<a href="@Context.GetLink(Context.String(BlogKeys.PostsPath))">Back to posts</a>
+<a href="@Context.GetLink("tags/index.html")">Back to tags</a>
