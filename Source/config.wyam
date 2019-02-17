@@ -7,6 +7,8 @@ Settings[Keys.LinksUseHttps] = true;
 Settings[BlogKeys.Title] = "My Blog";
 //Settings[BlogKeys.Description] = "Daniel Keenan's website";
 
+Settings[BlogKeys.PostsPath] = "blog";
+
 // Add any pipeline customizations here
 //Work around to get npm bootstrap to work.
 FileSystem.InputPaths.Add("node_modules/bootstrap/scss");

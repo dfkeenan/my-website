@@ -1,82 +1,57 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>@Model.WithoutSettings.String(BlogKeys.Title)</title>
-        <!-- Bootstrap -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+@{
+    Layout = "_MasterLayout";
+}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">dfkeenan</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <link rel="stylesheet" href="~/assets/css/main.css">
-
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">dfkeenan</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="@Context.GetLink("/")">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li> -->
-                @{
-                    List<Tuple<string, string>> pages = Context
-                        .Documents[Blog.Pages]
-                        .Where(x => x.Bool(BlogKeys.ShowInNavbar, true))
-                        .Where(x => x.FilePath(Keys.RelativeFilePath)?.FullPath?.StartsWith("index") == (bool?)false)
-                        .Select(x => Tuple.Create(x.WithoutSettings.String(Keys.Title), Context.GetLink(x)))
-                        .Where(x => !string.IsNullOrEmpty(x.Item1))
-                        .OrderBy(x => x.Item1)
-                        .ToList();
-                    if(Documents[Blog.Tags].Any())
-                    {
-                        pages.Insert(0, Tuple.Create("Tags", Context.GetLink("tags/index.html")));
-                    }
-                    if(Documents[Blog.BlogPosts].Any() && Context.Bool(BlogKeys.GenerateArchive))
-                    {
-                        pages.Insert(0, Tuple.Create("Archive", Context.GetLink(Context.String(BlogKeys.PostsPath) + "/index.html")));
-                    }
-                    foreach(Tuple<string, string> page in pages)
-                    {
-
-                        <li class="nav-item"><a class="nav-link" href="@(page.Item2)">@(page.Item1)</a></li>
-                    }
-                }
-            </div>
-        </nav>
-        <div class="container-fluid">
-            @if(Context.String(BlogKeys.Description) != null)
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            <a class="nav-link" href="@Context.GetLink("/")">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <!-- <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+        </li> -->
+        @{
+            List<Tuple<string, string>> pages = Context
+                .Documents[Blog.Pages]
+                .Where(x => x.Bool(BlogKeys.ShowInNavbar, true))
+                .Where(x => x.FilePath(Keys.RelativeFilePath)?.FullPath?.StartsWith("index") == (bool?)false)
+                .Select(x => Tuple.Create(x.WithoutSettings.String(Keys.Title), Context.GetLink(x)))
+                .Where(x => !string.IsNullOrEmpty(x.Item1))
+                .OrderBy(x => x.Item1)
+                .ToList();
+            if(Documents[Blog.Tags].Any())
             {
-                <a href="@Context.GetLink("/")"><h1>@Context.String(BlogKeys.Description)</h1> </a>
+                pages.Insert(0, Tuple.Create("Tags", Context.GetLink("tags/index.html")));
             }
-            @if(Context.String(BlogKeys.Intro) != null)
-            {            
-                @if(Context.String(BlogKeys.Description) != null)
-                {
-                    <hr>
-                }
-                <span>@Context.String(BlogKeys.Intro)</span>
+            if(Documents[Blog.BlogPosts].Any() && Context.Bool(BlogKeys.GenerateArchive))
+            {
+                pages.Insert(0, Tuple.Create("Archive", Context.GetLink(Context.String(BlogKeys.PostsPath) + "/index.html")));
             }
-            @RenderBody()
-        </div>
-        <footer class="bg-dark mt-4 p-4 fixed-bottom d-flex justify-content-center text-center">
-            <p class="text-muted">
-                <a href="https://github.com/dfkeenan/"><i class="fab fa-github"></i> GitHub</a> |
-                <a href="https://twitter.com/dfkeenan"><i class="fab fa-twitter"></i> Twitter</a>
-                <br>
-                Copyright &copy; Daniel Keenan.
-                <br>
-                Generated by <a href="http://wyam.io">Wyam</a>
-            </p>
-        </footer>
-    </body>
-</html>
+            foreach(Tuple<string, string> page in pages)
+            {
 
+                <li class="nav-item"><a class="nav-link" href="@(page.Item2)">@(page.Item1)</a></li>
+            }
+        }
+    </div>
+</nav>
+<div class="container-fluid">
+    @if(Context.String(BlogKeys.Description) != null)
+    {
+        <a href="@Context.GetLink("/")"><h1>@Context.String(BlogKeys.Description)</h1> </a>
+    }
+    @if(Context.String(BlogKeys.Intro) != null)
+    {            
+        @if(Context.String(BlogKeys.Description) != null)
+        {
+            <hr>
+        }
+        <span>@Context.String(BlogKeys.Intro)</span>
+    }
+    @RenderBody()
+</div>
