@@ -6,10 +6,11 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-            <h1>@Context.String(Keys.Title)</h1>   
+            <h1>@(string.Format((ViewBag.TitleFormat as string) ?? "{0}", Model.WithoutSettings.String(BlogKeys.Title)))</h1>    
+            <!-- <h1>@Context.String(Keys.Title)</h1> -->
             @RenderBody()
         </div>
-        <div class="d-none d-lg-flex flex-column mt-3 pl-3 pr-3" style="width:250px;" >
+        <div class="d-none d-lg-block mt-3 pl-3 pr-3" style="width:250px;" >
             <div class="card border-dark bg-transparent">
                 <div class="card-header bg-dark">Popular tags</div>
                 <div class="card-body text-light">

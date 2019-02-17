@@ -5,7 +5,7 @@
 }
 
 
-<h2>@Model.WithoutSettings.String(BlogKeys.Title)</h2>         
+        
 <h5>Published @Published.ToShortDateString()</h5>
 
 <nav id="top-nav" class="navbar navbar-dark bg-dark">
@@ -22,9 +22,11 @@
     </div>
 
 
-    <a href="@Context.GetLink(Context.String(BlogKeys.PostsPath))">Back To posts</a>
+    <a href="@Context.GetLink(Context.String(BlogKeys.PostsPath))">Back to posts</a>
 </nav>
 
-
+<section class="m-3">
 @RenderBody()
+</section>
+
 

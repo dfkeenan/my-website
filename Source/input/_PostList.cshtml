@@ -1,0 +1,10 @@
+<div class="card-deck">
+    @foreach(var post in Model.DocumentList(Keys.PageDocuments).Take(3)){
+        <div class="card">
+            <div class="card-body">
+                <a href="@Context.GetLink(post)"><h5 class="card-title"> @post.WithoutSettings.String(BlogKeys.Title)</h5></a>
+                <p class="card-text">@Html.Raw(post.String(BlogKeys.Excerpt))</p>
+            </div>
+        </div>
+    }
+</div>

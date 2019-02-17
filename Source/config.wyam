@@ -1,6 +1,9 @@
 #recipe Blog
 #theme BlogTemplate
 
+System.Globalization.CultureInfo.DefaultThreadCurrentCulture
+    = System.Globalization.CultureInfo.CreateSpecificCulture("en-AU");
+
 // Customize your settings and add new ones here
 Settings[Keys.Host] = "dfkeenan.github.io";
 Settings[Keys.LinksUseHttps] = true;

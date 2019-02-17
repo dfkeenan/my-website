@@ -2,9 +2,8 @@
     var postPages = Model.DocumentList(Keys.PageDocuments).OrderByDescending(x => x.Get<DateTime>(BlogKeys.Published)); 
     string tag = Model.String(BlogKeys.Tag).ToLowerInvariant().Replace(' ', '-'); 
     tag = tag.StartsWith(".") ? tag.Substring(1) : tag; 
-}
-
-<h2>Posts tagged @Model.WithoutSettings.String(BlogKeys.Title)</h2>         
+    ViewBag.TitleFormat = "Posts tagged with {0}";
+}      
 <ul>
     @foreach(var post in postPages){
     <li>

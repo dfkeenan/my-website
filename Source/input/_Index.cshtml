@@ -45,16 +45,7 @@
     <section id="blog-section" class="promo-section bg-dark">
         <div class="container-fluid">
             <h1>Blogs</h1>
-            <div class="card-deck">
-                @foreach(var post in Model.DocumentList(Keys.PageDocuments).Take(3)){
-                    <div class="card">
-                        <div class="card-body">
-                            <a href="@Context.GetLink(post)"><h5 class="card-title"> @post.WithoutSettings.String(BlogKeys.Title)</h5></a>
-                            <p class="card-text">@Html.Raw(post.String(BlogKeys.Excerpt))</p>
-                        </div>
-                    </div>
-                }
-            </div>
+            @Html.Partial("_PostList.cshtml")
             <a href="@Context.GetLink(Context.String(BlogKeys.PostsPath))">More blog posts</a>
         </div>
         
