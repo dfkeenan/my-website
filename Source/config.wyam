@@ -10,7 +10,9 @@ Settings[Keys.LinksUseHttps] = true;
 Settings[BlogKeys.Title] = "My Blog";
 //Settings[BlogKeys.Description] = "Daniel Keenan's website";
 
-Settings[BlogKeys.PostsPath] = "blog";
+Settings[BlogKeys.PostsPath] = "blog/posts";
+Settings[BlogKeys.IndexTemplate] = "_PostIndex.cshtml";
+Settings[BlogKeys.IndexPath] = "blog/index.html";
 
 // Add any pipeline customizations here
 //Work around to get npm bootstrap to work.
